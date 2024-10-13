@@ -3,6 +3,20 @@ uuid = "21605d96-f59a-48f1-9b8f-10329cb5ba4e"
 authors = ["Nikos Gianniotis <ngiann@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
+[deps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+
+[weakdeps]
+ELBOfy = "6fc07f5b-fa7b-4f51-aead-263239aaf445"
+
+[extensions]
+# name of extension to the left
+# extension dependencies required to load the extension to the right
+# use a list for multiple extension dependencies
+MaximiseElboExt = "ELBOfy"
+
 [compat]
 julia = "1.6.7"
 
