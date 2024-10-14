@@ -2,9 +2,9 @@ module MaximiseElboExt # Should be same name as the file (just like a normal pac
 
     using ELBOfyUtilities, ELBOfy, Optim
 
-    function ELBOfyUtilities.maximise_elbo(elbo::T, μ; iterations = 1000, show_trace = true) where T<:ELBOfy.AbstractElbo
+    function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, show_trace = true) where T<:ELBOfy.AbstractElbo
 
-        optimize(x-> -elbo(x), μ,Optim.Options(show_trace = show_trace, iterations = iterations))
+        optimize(x-> -elbo(x), params, Optim.Options(show_trace = show_trace, iterations = iterations))
 
     end
 
