@@ -1,7 +1,7 @@
-function getcovariance(logposterior, mode)
+function getcovariance(logposterior, mode; minimumeigenvalue = 1e-6)
 
    H = -ForwardDiff.hessian(logposterior, mode)
 
-   Symmetric(inv(H))
+   inv(nearestposdef(H; minimumeigenvalue = minimumeigenvalue))
 
 end

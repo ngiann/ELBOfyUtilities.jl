@@ -8,6 +8,13 @@ module ELBOfyUtilities
 
     include("maximise_elbo.jl")
 
-    export getmode, getcovariance, maximise_elbo
+    include("nearestposdef.jl")
+
+    
+    export getmode, getcovariance
+    
+    export maximise_elbo
+    
+    export nearestposdef
 
 end
