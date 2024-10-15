@@ -4,7 +4,17 @@ module MaximiseElboExt # Should be same name as the file (just like a normal pac
 
     function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, show_trace = true) where T<:ELBOfy.AbstractElbo
 
-        optimize(x-> -elbo(x), params, Optim.Options(show_trace = show_trace, iterations = iterations))
+        opt = Optim.Options(show_trace = show_trace, iterations = iterations)
+
+        if has_logp_gradient(elbo)
+
+            gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(elbo, param))
+        
+            return optimize(x-> -elbo(x), params, ConjugateGradient(), opt)
+
+        end
+
+        return optimize(x-> -elbo(x), params, NelderMead(), opt)
 
     end
 
