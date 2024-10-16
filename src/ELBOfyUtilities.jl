@@ -2,6 +2,7 @@ module ELBOfyUtilities
 
     using Optim, ForwardDiff, LinearAlgebra
 
+    
     include("getmode.jl")
 
     include("getcovariance.jl")
@@ -10,11 +11,15 @@ module ELBOfyUtilities
 
     include("nearestposdef.jl")
 
+    include("numerical_KLD.jl")
+
     
     export getmode, getcovariance
     
     export maximise_elbo
     
     export nearestposdef
+
+    export numerical_KLD
 
 end
