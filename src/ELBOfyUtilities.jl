@@ -1,6 +1,6 @@
 module ELBOfyUtilities
 
-    using Optim, ForwardDiff, LinearAlgebra
+    using Optim, ForwardDiff, LinearAlgebra, Distributions
 
     
     include("getmode.jl")
