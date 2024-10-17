@@ -13,8 +13,7 @@ Optim = "429524aa-4258-5aef-a3af-852621145aeb"
 ELBOfy = "6fc07f5b-fa7b-4f51-aead-263239aaf445"
 
 [extensions]
-MaximiseElboExt = "ELBOfy"
-UpdateCovarianceExt = "ELBOfy"
+ELBOfyExt = "ELBOfy"
 
 [compat]
 julia = "1.6.7"
