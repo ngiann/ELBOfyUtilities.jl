@@ -14,6 +14,7 @@ ELBOfy = "6fc07f5b-fa7b-4f51-aead-263239aaf445"
 
 [extensions]
 MaximiseElboExt = "ELBOfy"
+UpdateCovarianceExt = "ELBOfy"
 
 [compat]
 julia = "1.6.7"

@@ -2,6 +2,7 @@ module ELBOfyUtilities
 
     using Optim, ForwardDiff, LinearAlgebra, Distributions
 
+    include("updatecovariance.jl")
     
     include("getmode.jl")
 
@@ -13,6 +14,7 @@ module ELBOfyUtilities
 
     include("numerical_KLD.jl")
 
+    export updatecovariance
     
     export getmode, getcovariance
     
