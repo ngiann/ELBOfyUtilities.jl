@@ -30,23 +30,23 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
     # end
 
 
-    #-------------------------------------------------------------------------------------------------------------------------------------
-    function ELBOfyUtilities.maximise_elbo(elbos::Vector{T}, params; iterations = 1000, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
-    #-------------------------------------------------------------------------------------------------------------------------------------
+    # #-------------------------------------------------------------------------------------------------------------------------------------
+    # function ELBOfyUtilities.maximise_elbo(elbos::Vector{T}, params; iterations = 1000, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
+    # #-------------------------------------------------------------------------------------------------------------------------------------
 
-        opt = Optim.Options(show_trace = show_trace, iterations = iterations, allow_f_increases = false, g_tol = g_tol)
+    #     opt = Optim.Options(show_trace = show_trace, iterations = iterations, allow_f_increases = false, g_tol = g_tol)
 
-        # if has_logp_gradient(elbo)
+    #     # if has_logp_gradient(elbo)
 
-        #     gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(elbo, param))
+    #     #     gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(elbo, param))
         
-        #     return optimize(x-> -elbo(x), params, ConjugateGradient(), opt)
+    #     #     return optimize(x-> -elbo(x), params, ConjugateGradient(), opt)
 
-        # end
+    #     # end
 
-        return optimize(x-> -elbos(x), params, NelderMead(), opt)
+    #     return optimize(x-> -elbos(x), params, NelderMead(), opt)
 
-    end
+    # end
 
 
     #-------------------------------------------------------------------------------------------------------------------------------------
