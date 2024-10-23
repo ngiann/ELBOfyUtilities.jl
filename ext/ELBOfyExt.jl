@@ -1,26 +1,49 @@
 module ELBOfyExt # Should be same name as the file (just like a normal package)
 
-    using ELBOfyUtilities, ELBOfy, Optim
+    using ELBOfyUtilities, ELBOfy, Optim, Printf
+
+    include("trackElbo.jl")
 
     #-------------------------------------------------------------------------------------------------------------------------------------
-    function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
+    function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
     #-------------------------------------------------------------------------------------------------------------------------------------
 
-        opt = Optim.Options(show_trace = show_trace, show_every=2, iterations = iterations, allow_f_increases = false, g_tol = g_tol)
+    
+        trackelbo = trackElbo(elbo)
+
+        counter = 0
+        
+        function cb(_)
+            
+            counter += 1
+
+            if iteration_test > 0 && mod(counter, iteration_test) == 1
+
+                testlogevidence = testelbo(trackelbo, trackelbo.bestsolutionsofar)
+                
+                @printf("(%d)\t Test evidence is %f\n", counter, testlogevidence)
+
+            end
+            
+            false
+            
+        end
+
+        opt = Optim.Options(callback = cb, show_trace = show_trace, show_every=2, iterations = iterations, allow_f_increases = false, g_tol = g_tol)
 
         if has_logp_gradient(elbo)
 
             # display("gradient opt")
 
-            gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(elbo, param))
+            gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(trackelbo, param))
         
             # params = optimize(x-> -elbo(x), params, ParticleSwarm(), Optim.Options(iterations=1000, show_every=100, show_trace=true)).minimizer
 
-            return optimize(x-> -elbo(x), params, ConjugateGradient(), opt)
+            return optimize(x-> -trackelbo(x), params, ConjugateGradient(), opt)
 
         end
 
-        return optimize(x-> -elbo(x), params, NelderMead(), opt)
+        return optimize(x-> -trackelbo(x), params, NelderMead(), opt)
 
     end
 
