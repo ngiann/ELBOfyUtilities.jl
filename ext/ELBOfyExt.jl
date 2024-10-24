@@ -35,6 +35,12 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
         counter = 0
         
         function cb(_)
+
+            if iteration_test == 0
+
+                return false # nothing to do
+
+            end
             
             counter += 1
 
