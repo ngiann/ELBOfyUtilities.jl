@@ -17,6 +17,7 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
     end
 
+
     #-------------------------------------------------------------------------------------------------------------------------------------
     function ELBOfyUtilities.maximise_elbo(elbo::T; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
     #-------------------------------------------------------------------------------------------------------------------------------------
@@ -25,30 +26,24 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
     end
 
+
     #-------------------------------------------------------------------------------------------------------------------------------------
     function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
     #-------------------------------------------------------------------------------------------------------------------------------------
 
-    
         trackelbo = trackElbo(elbo)
 
         counter = 0
         
         function cb(_)
 
-            if iteration_test == 0
-
-                return false # nothing to do
-
-            end
-            
             counter += 1
 
-            if iteration_test > 0 && mod(counter, iteration_test) == 1
+            if iteration_test > 0 & mod(counter, iteration_test) == 1
 
                 testlogevidence = testelbo(trackelbo, trackelbo.bestsolutionsofar)
                 
-                @printf("(%d)\t Test evidence is %f\n", counter, testlogevidence)
+                @printf("\t Test evidence is %f\n", testlogevidence)
 
             end
             
@@ -56,7 +51,9 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
             
         end
 
+
         opt = Optim.Options(callback = cb, show_trace = show_trace, show_every=2, iterations = iterations, allow_f_increases = false, g_tol = g_tol)
+
 
         if has_logp_gradient(elbo)
 
@@ -74,7 +71,7 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
     end
 
-
+    
     #-------------------------------------------------------------------------------------------------------------------------------------
     function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, param; minimumeigenvalue = 1e-6)
     #-------------------------------------------------------------------------------------------------------------------------------------
