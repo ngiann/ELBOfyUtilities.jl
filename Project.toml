@@ -1,7 +1,7 @@
 name = "ELBOfyUtilities"
 uuid = "21605d96-f59a-48f1-9b8f-10329cb5ba4e"
 authors = ["Nikos Gianniotis <ngiann@gmail.com> and contributors"]
-version = "1.0.3-DEV"
+version = "1.0.4-DEV"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
