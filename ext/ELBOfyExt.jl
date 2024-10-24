@@ -4,6 +4,27 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
     include("trackElbo.jl")
 
+
+    #-------------------------------------------------------------------------------------------------------------------------------------
+    function ELBOfyUtilities.maximise_elbo(elbo::T, res::Optim.OptimizationResults; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
+    #-------------------------------------------------------------------------------------------------------------------------------------
+
+        params = res.minimizer
+
+        @printf("Resuming optimisation starting with approximate elbo of %f\n", elbo(res.minimizer))
+
+        ELBOfyUtilities.maximise_elbo(elbo, params; iterations = iterations, iteration_test = iteration_test, show_trace = show_trace, g_tol = g_tol)
+
+    end
+
+    #-------------------------------------------------------------------------------------------------------------------------------------
+    function ELBOfyUtilities.maximise_elbo(elbo::T; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
+    #-------------------------------------------------------------------------------------------------------------------------------------
+    
+        ELBOfyUtilities.maximise_elbo(elbo, randn(ELBOfy.numparam(elbo)); iterations = iterations, iteration_test = iteration_test, show_trace = show_trace, g_tol = g_tol)
+
+    end
+
     #-------------------------------------------------------------------------------------------------------------------------------------
     function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-4) where T<:ELBOfy.AbstractElbo
     #-------------------------------------------------------------------------------------------------------------------------------------
