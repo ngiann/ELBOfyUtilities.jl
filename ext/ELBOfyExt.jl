@@ -39,7 +39,7 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
             counter += 1
 
-            if iteration_test > 0 & mod(counter, iteration_test) == 1
+            if iteration_test > 0 && mod(counter, iteration_test) == 1
 
                 testlogevidence = testelbo(trackelbo, trackelbo.bestsolutionsofar)
                 
