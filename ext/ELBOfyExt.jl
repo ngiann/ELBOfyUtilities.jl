@@ -61,7 +61,7 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
         
             # params = optimize(x-> -elbo(x), params, ParticleSwarm(), Optim.Options(iterations=1000, show_every=100, show_trace=true)).minimizer
 
-            return optimize(x-> -trackelbo(x), params, ConjugateGradient(), opt)
+            return optimize(x-> -trackelbo(x), params, LBFGS(), opt)
 
         end
 
