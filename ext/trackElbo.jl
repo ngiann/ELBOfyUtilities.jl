@@ -5,12 +5,13 @@ mutable struct trackElbo{T1<:ELBOfy.AbstractElbo,T3}
     elbo::T1
     bestvaluesofar::T3
     bestsolutionsofar::Vector{T3}
+    counter::Int64
 
 end
 
 function trackElbo(elbo::ELBOfy.AbstractElbo)#; S = elbo.S, rng::AbstractRNG = Xoshiro(1))
 
-    trackElbo(elbo, -Inf, zeros(numparam(elbo)))
+    trackElbo(elbo, -Inf, zeros(numparam(elbo)), 0)
 
 end
 
@@ -29,3 +30,8 @@ function (e::trackElbo)(params)
 end
 
 testelbo(e::trackElbo, p) = ELBOfy.testelbo(e.elbo, p)
+
+# Counter related
+resetcounter!(e::trackElbo) = e.counter = 0
+getcounter(e::trackElbo) = e.counter
+incrementcounter(e::trackElbo) = e.counter += 1

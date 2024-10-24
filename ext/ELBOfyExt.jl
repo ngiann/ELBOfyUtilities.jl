@@ -33,13 +33,11 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
         trackelbo = trackElbo(elbo)
 
-        counter = 0
-        
         function cb(_)
 
-            counter += 1
-
-            if iteration_test > 0 && mod(counter, iteration_test) == 1
+            incrementcounter(trackelbo)
+            
+            if iteration_test > 0 && mod(getcounter(trackelbo), iteration_test) == 1
 
                 testlogevidence = testelbo(trackelbo, trackelbo.bestsolutionsofar)
                 
