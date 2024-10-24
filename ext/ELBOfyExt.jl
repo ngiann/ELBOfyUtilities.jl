@@ -80,11 +80,26 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
     
         Vnew, = ELBOfy.eigendecomposition(Σnew)
     
-        elbonew = ELBOfy.ElboMVIExt(elbo.Z, elbo.D, elbo.d, elbo.S, elbo.logp, elbo.gradlogp, elbo.howtorun, Vnew, Cprv)
+        elbonew = ELBOfy.ElboMVIExt(elbo.Z, elbo.D, elbo.d, elbo.S, elbo.logp, elbo.gradlogp, elbo.parallel, Vnew, Cprv)
     
         elbonew, [μ; zeros(elbo.D); 1.0; ψ] # set mean μ to current mean
                                             # set eigenvalues to zero, this makes the contribution of the new covariance zero
                                             # set t to 1, this retains the previous solution
+    end
+
+
+    #-------------------------------------------------------------------------------------------------------------------------------------
+    function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, res::Optim.OptimizationResults; minimumeigenvalue = 1e-6)
+    #-------------------------------------------------------------------------------------------------------------------------------------
+       
+        params = res.minimizer
+
+        elbonew, paramsnew = ELBOfyUtilities.updatecovariance(elbo, params; minimumeigenvalue = minimumeigenvalue)
+
+        res.minimizer = paramsnew
+        
+        return elbonew, res
+
     end
 
 end # module
