@@ -9,6 +9,8 @@ module ELBOfyUtilities
 
     include("getcovariance.jl")
 
+    include("geteigenvectors.jl")
+
     include("maximise_elbo.jl")
 
     include("nearestposdef.jl")
@@ -17,7 +19,7 @@ module ELBOfyUtilities
 
     export updatecovariance
     
-    export getmode, getcovariance
+    export getmode, getcovariance, geteigenvectors
     
     export maximise_elbo
     
