@@ -91,12 +91,12 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
 
     #-------------------------------------------------------------------------------------------------------------------------------------
-    function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, res::Optim.OptimizationResults; minimumeigenvalue = 1e-6)
+    function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, res::Optim.OptimizationResults)
     #-------------------------------------------------------------------------------------------------------------------------------------
        
         params = res.minimizer
 
-        elbonew, paramsnew = ELBOfyUtilities.updatecovariance(elbo, params; minimumeigenvalue = minimumeigenvalue)
+        elbonew, paramsnew = ELBOfyUtilities.updatecovariance(elbo, params)
 
         res.minimizer = paramsnew
         
