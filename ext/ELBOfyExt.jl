@@ -71,14 +71,16 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
     
     #-------------------------------------------------------------------------------------------------------------------------------------
-    function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, param; minimumeigenvalue = 1e-6)
+    function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, param)
     #-------------------------------------------------------------------------------------------------------------------------------------
   
         μ, Cprv, ψ = ELBOfy.getμCψ(elbo, param)
     
-        Σnew = getcovariance(elbo.logp, μ; minimumeigenvalue = minimumeigenvalue)
+        # Σnew = getcovariance(elbo.logp, μ; minimumeigenvalue = minimumeigenvalue)
     
-        Vnew, = ELBOfy.eigendecomposition(Σnew)
+        # Vnew, = ELBOfy.eigendecomposition(Σnew)
+
+        Vnew = geteigenvectors(elbo.logp, μ)
     
         elbonew = ELBOfy.ElboMVIExt(elbo.Z, elbo.D, elbo.d, elbo.S, elbo.logp, elbo.gradlogp, elbo.parallel, Vnew, Cprv)
     
