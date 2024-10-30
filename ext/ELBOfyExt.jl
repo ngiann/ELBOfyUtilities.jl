@@ -4,6 +4,8 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
     include("trackElbo.jl")
 
+    include("get_callback_and_track_elbo_for_tracking_test_evidence.jl")
+
 
     #-------------------------------------------------------------------------------------------------------------------------------------
     function ELBOfyUtilities.maximise_elbo(elbo::T, res::Optim.OptimizationResults; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-6) where T<:ELBOfy.AbstractElbo
@@ -30,25 +32,8 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
     #-------------------------------------------------------------------------------------------------------------------------------------
     function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, iteration_test = 0, show_trace = true, g_tol=1e-6) where T<:ELBOfy.AbstractElbo
     #-------------------------------------------------------------------------------------------------------------------------------------
-
-        trackelbo = trackElbo(elbo)
-
-        function cb(_)
-
-            incrementcounter(trackelbo)
-            
-            if iteration_test > 0 && mod(getcounter(trackelbo), iteration_test) == 1
-
-                testlogevidence = testelbo(trackelbo, trackelbo.bestsolutionsofar)
-                
-                @printf("\t Test evidence is %f\n", testlogevidence)
-
-            end
-            
-            false
-            
-        end
-
+    
+        trackelbo, cb = get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_test)
 
         opt = Optim.Options(callback = cb, show_trace = show_trace, show_every=2, iterations = iterations, allow_f_increases = false, g_tol = g_tol)
 
