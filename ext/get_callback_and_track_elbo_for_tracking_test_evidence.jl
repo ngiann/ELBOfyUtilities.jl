@@ -4,7 +4,7 @@ function get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_
 
     function cb(_)
 
-        incrementcounter(trackelbo)
+        incrementcounter!(trackelbo)
         
         if iteration_test > 0 && mod(getcounter(trackelbo), iteration_test) == 1
 

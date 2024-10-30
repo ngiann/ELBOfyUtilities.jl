@@ -34,4 +34,4 @@ testelbo(e::trackElbo, p) = ELBOfy.testelbo(e.elbo, p)
 # Counter related
 resetcounter!(e::trackElbo) = e.counter = 0
 getcounter(e::trackElbo) = e.counter
-incrementcounter(e::trackElbo) = e.counter += 1
+incrementcounter!(e::trackElbo) = e.counter += 1
