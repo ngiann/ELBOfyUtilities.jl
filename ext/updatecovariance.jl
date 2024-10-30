@@ -18,16 +18,6 @@ function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, param)
 end
 
 
-#-------------------------------------------------------------------------------------------------------------------------------------
-function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, res::Optim.OptimizationResults)
-#-------------------------------------------------------------------------------------------------------------------------------------
-    
-    params = res.minimizer
+ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, res::Optim.OptimizationResults) = ELBOfyUtilities.updatecovariance(elbo, getsolution(res))
 
-    elbonew, paramsnew = ELBOfyUtilities.updatecovariance(elbo, params)
-
-    res.minimizer = paramsnew
-    
-    return elbonew, res
-
-end
+ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVIExt, res::BlackBoxOptim.OptimizationResults) = ELBOfyUtilities.updatecovariance(elbo, getsolution(res))
