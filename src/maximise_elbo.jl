@@ -1,5 +1,8 @@
-function maximise_elbo(_...)
+maximise_elbo(_...) = @error("package ELBOfy must be independently loaded!")
 
-    @error("package ELBOfy must be independently loaded!")
-    
-end
+bbmaximise_elbo(_...) = @error("package ELBOfy must be independently loaded!")
+
+getsolution(_...) =  @error("package ELBOfy must be independently loaded!")
+
+getminimum(_...) =  @error("package ELBOfy must be independently loaded!")
+

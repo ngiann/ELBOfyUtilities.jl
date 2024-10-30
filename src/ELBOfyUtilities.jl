@@ -20,7 +20,9 @@ module ELBOfyUtilities
     
     export getmode, getcovariance, geteigenvectors
     
-    export maximise_elbo
+    export maximise_elbo, bbmaximise_elbo
+
+    export getminimum, getsolution
     
     export nearestposdef
 
