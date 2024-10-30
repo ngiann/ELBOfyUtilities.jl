@@ -21,7 +21,7 @@ end
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
-function ELBOfyUtilities.bbmaximise_elbo(elbo::T, params; Method = :adaptive_de_rand_1_bin_radiuslimited, bound = 10.0, iterations = 1000, iteration_test = 0) where T<:ELBOfy.AbstractElbo
+function ELBOfyUtilities.bbmaximise_elbo(elbo::T, params; Method = :adaptive_de_rand_1_bin_radiuslimited, bound = maximum(abs.(params)), iterations = 1000, iteration_test = 0) where T<:ELBOfy.AbstractElbo
 #-------------------------------------------------------------------------------------------------------------------------------------
 
     trackelbo, cb = get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_test)
