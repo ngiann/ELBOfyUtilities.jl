@@ -1,7 +1,7 @@
 module ELBOfyUtilities
 
     using Optim, ForwardDiff, LinearAlgebra, Distributions
-    # using BlackBoxOptim
+    using BlackBoxOptim
 
     include("updatecovariance.jl")
     
