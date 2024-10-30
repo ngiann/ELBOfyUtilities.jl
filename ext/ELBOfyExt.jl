@@ -55,12 +55,8 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
 
         if has_logp_gradient(elbo)
 
-            # display("gradient opt")
-
             gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(trackelbo, param))
         
-            # params = optimize(x-> -elbo(x), params, ParticleSwarm(), Optim.Options(iterations=1000, show_every=100, show_trace=true)).minimizer
-
             return optimize(x-> -trackelbo(x), params, LBFGS(), opt)
 
         end
