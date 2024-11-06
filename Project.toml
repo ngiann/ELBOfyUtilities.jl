@@ -1,10 +1,12 @@
 name = "ELBOfyUtilities"
 uuid = "21605d96-f59a-48f1-9b8f-10329cb5ba4e"
 authors = ["Nikos Gianniotis <ngiann@gmail.com> and contributors"]
-version = "1.0.9-DEV"
+version = "1.0.10-DEV"
 
 [deps]
+BlackBoxOptim = "a134a8b2-14d6-55f6-9291-3336d3ab0209"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Evolutionary = "86b6b26d-c046-49b6-aa0b-5f0f74682bd6"
 FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Optim = "429524aa-4258-5aef-a3af-852621145aeb"
