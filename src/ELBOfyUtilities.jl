@@ -1,6 +1,6 @@
 module ELBOfyUtilities
 
-    using Optim, ForwardDiff, LinearAlgebra, Distributions
+    using Optim, LinearAlgebra, Distributions, FiniteDiff
 
     include("updatecovariance.jl")
     
