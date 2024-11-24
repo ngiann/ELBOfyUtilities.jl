@@ -24,11 +24,11 @@ function ELBOfyUtilities.cmaesmaximise_elbo(elbo::T, params; iterations = 1000, 
 
     @printf("Resuming optimisation starting with approximate elbo of %f\n", elbo(params))
 
-    trackelbo, cb = get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_test)
+    # trackelbo, cb = get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_test)
 
     @assert(length(params) == numparam(elbo))
 
-    Evolutionary.optimize(x-> -trackelbo(x), params, CMAES(), Evolutionary.Options(iterations = iterations, rng = rng, show_trace = true))
+    Evolutionary.optimize(x-> -elbo(x), params, CMAES(), Evolutionary.Options(iterations = iterations, rng = rng, show_trace = true))
 
 end
 

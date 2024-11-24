@@ -24,11 +24,11 @@ end
 function ELBOfyUtilities.bbmaximise_elbo(elbo::T, params; Method = :adaptive_de_rand_1_bin_radiuslimited, bound = maximum(abs.(params)), iterations = 1000, iteration_test = 0) where T<:ELBOfy.AbstractElbo
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-    trackelbo, cb = get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_test)
+    # trackelbo, cb = get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_test)
 
     @assert(length(params) == numparam(elbo))
 
-    bboptimize(x-> -trackelbo(x), params; Method = Method, SearchRange = (-abs(bound), abs(bound)), NumDimensions = numparam(elbo), MaxFuncEvals = iterations)
+    bboptimize(x-> -elbo(x), params; Method = Method, SearchRange = (-abs(bound), abs(bound)), NumDimensions = numparam(elbo), MaxFuncEvals = iterations)
 
 end
 

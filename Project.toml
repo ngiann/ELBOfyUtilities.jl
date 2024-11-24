@@ -1,7 +1,7 @@
 name = "ELBOfyUtilities"
 uuid = "21605d96-f59a-48f1-9b8f-10329cb5ba4e"
 authors = ["Nikos Gianniotis <ngiann@gmail.com> and contributors"]
-version = "1.0.11-DEV"
+version = "1.0.12-DEV"
 
 [deps]
 BlackBoxOptim = "a134a8b2-14d6-55f6-9291-3336d3ab0209"
@@ -12,6 +12,7 @@ LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Optim = "429524aa-4258-5aef-a3af-852621145aeb"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [weakdeps]
 ELBOfy = "6fc07f5b-fa7b-4f51-aead-263239aaf445"
