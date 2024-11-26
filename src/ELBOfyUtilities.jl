@@ -1,7 +1,7 @@
 module ELBOfyUtilities
 
-    using Optim, LinearAlgebra, Distributions, FiniteDiff, BlackBoxOptim, Evolutionary
-
+    using Optim, LinearAlgebra, Distributions, BlackBoxOptim, Evolutionary, FiniteDiff
+    
     include("updatecovariance.jl")
     
     include("getmode.jl")
