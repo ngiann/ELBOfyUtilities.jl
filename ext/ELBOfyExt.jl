@@ -1,6 +1,7 @@
 module ELBOfyExt # Should be same name as the file (just like a normal package)
 
     using ELBOfyUtilities, ELBOfy, Optim, Printf, Random, Zygote
+    using DifferentiationInterface
     using BlackBoxOptim
     using Evolutionary
 
