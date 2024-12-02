@@ -38,3 +38,22 @@ function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboSkewDiagExt, param::V
                                            # set t to 1, this retains the previous solution
 end
     
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+function ELBOfyUtilities.updatecovariance(mix::ELBOfy.ElboMVIExtMixture, param::Vector)
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+    ω, p = ELBOfy.unpack(mix, param) 
+
+    elboarray = map(1:mix.K) do k
+
+        ELBOfyUtilities.updatecovariance(mix.comp[k], p[k])
+
+    end
+
+    newparams = [log.(ω); reduce(vcat, [e[2] for e in elboarray])]
+
+    return ELBOfy.ElboMVIExtMixture([e[1] for e in elboarray], mix.K), newparams
+
+
+end
