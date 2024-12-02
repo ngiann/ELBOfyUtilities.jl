@@ -1,6 +1,8 @@
 module ELBOfyUtilities
 
-    using Optim, LinearAlgebra, Distributions, BlackBoxOptim, Evolutionary, FiniteDiff
+    using LinearAlgebra, Distributions, FiniteDiff
+    using Optim, BlackBoxOptim, Evolutionary
+    using OnlineStats
     
     include("updatecovariance.jl")
     
