@@ -40,7 +40,7 @@ end
     
 
 #-------------------------------------------------------------------------------------------------------------------------------------
-function ELBOfyUtilities.updatecovariance(mix::ELBOfy.ElboMVIExtMixture, param::Vector)
+function ELBOfyUtilities.updatecovariance(mix::ELBOfy.ElboMixture{T}, param::Vector) where T<:ELBOfy.ElboMVIExt
 #-------------------------------------------------------------------------------------------------------------------------------------
 
     K = length(mix)
@@ -55,7 +55,18 @@ function ELBOfyUtilities.updatecovariance(mix::ELBOfy.ElboMVIExtMixture, param::
 
     newparams = [log.(ω); reduce(vcat, [e[2] for e in elboarray])]
 
-    return ELBOfy.ElboMVIExtMixture([e[1] for e in elboarray]), newparams
+    return ELBOfy.ElboMixture([e[1] for e in elboarray]), newparams
 
+
+end
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+function ELBOfyUtilities.updatecovariance(mix, param::Vector)
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+    @printf("Nothing to update, returning arguments.")
+
+    mix, param
 
 end
