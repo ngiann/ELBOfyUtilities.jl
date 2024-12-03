@@ -43,9 +43,11 @@ end
 function ELBOfyUtilities.updatecovariance(mix::ELBOfy.ElboMVIExtMixture, param::Vector)
 #-------------------------------------------------------------------------------------------------------------------------------------
 
+    K = length(mix)
+
     ω, p = ELBOfy.unpack(mix, param) 
 
-    elboarray = map(1:mix.K) do k
+    elboarray = map(1:K) do k
 
         ELBOfyUtilities.updatecovariance(mix.comp[k], p[k])
 
@@ -53,7 +55,7 @@ function ELBOfyUtilities.updatecovariance(mix::ELBOfy.ElboMVIExtMixture, param::
 
     newparams = [log.(ω); reduce(vcat, [e[2] for e in elboarray])]
 
-    return ELBOfy.ElboMVIExtMixture([e[1] for e in elboarray], mix.K), newparams
+    return ELBOfy.ElboMVIExtMixture([e[1] for e in elboarray]), newparams
 
 
 end
