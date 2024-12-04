@@ -1,6 +1,6 @@
 module ELBOfyExt # Should be same name as the file (just like a normal package)
 
-    using ELBOfyUtilities, ELBOfy, Optim, Printf, Random, Zygote
+    using ELBOfyUtilities, ELBOfy, Optim, Printf, Random, Zygote, LinearAlgebra
     using DifferentiationInterface
     using BlackBoxOptim
     using Evolutionary
@@ -27,5 +27,7 @@ module ELBOfyExt # Should be same name as the file (just like a normal package)
     include("get_callback_and_track_elbo_for_tracking_test_evidence.jl")
 
     include("updatecovariance.jl")
+
+    include("convert_parameters.jl")
 
 end # module

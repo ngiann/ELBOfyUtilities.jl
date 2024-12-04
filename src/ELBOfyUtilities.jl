@@ -19,6 +19,8 @@ module ELBOfyUtilities
 
     include("numerical_KLD.jl")
 
+    include("convert_parameters.jl")
+
     export updatecovariance
     
     export getmode, getcovariance, geteigenvectors
@@ -30,5 +32,7 @@ module ELBOfyUtilities
     export nearestposdef
 
     export numerical_KLD
+
+    export diagonal_parameters, full_parameters, mvi_parameters
 
 end
