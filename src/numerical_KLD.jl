@@ -1,10 +1,10 @@
-function numerical_KLD(d, logp; numsamples = 10_000)
+function numerical_KLD(d, logp; numsamples = 10_000, rng::AbstractRNG = Xoshiro(1))
 
     stats = Series(Mean(), Variance())
 
     for _ in 1:numsamples
 
-        sample = Distributions.rand(d)
+        sample = Distributions.rand(rng, d)
 
         aux = Distributions.logpdf(d, sample) - logp(sample)
 

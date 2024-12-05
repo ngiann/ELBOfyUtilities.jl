@@ -1,6 +1,6 @@
 module ELBOfyUtilities
 
-    using LinearAlgebra, Distributions, FiniteDiff
+    using LinearAlgebra, Distributions, FiniteDiff, Random
     using Optim, BlackBoxOptim, Evolutionary
     using OnlineStats
     using Printf
