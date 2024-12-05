@@ -44,7 +44,7 @@ function ELBOfyUtilities.full_parameters(elbo::T, p) where T<:ELBOfy.ElboSphere
 
     newp = [p[1:D]; p[D+1] * vec(1.0 * Matrix(I, D, D))]
 
-    @assert(length(newp) == D + 2D)
+    @assert(length(newp) == D + D*D)
 
     return newp
     
