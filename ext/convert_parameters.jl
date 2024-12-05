@@ -31,6 +31,20 @@ function ELBOfyUtilities.diagonal_parameters(elbo::ELBOfy.ElboMixture{T}, p) whe
 end
 
 
+function ELBOfyUtilities.diagonal_parameters(elbo::ELBOfy.ElboUniformMixture{T}, p) where T<:ELBOfy.ElboSphere
+
+    K = length(elbo)
+    
+    np = numparam(elbo.comp[1]) # assume all components are of the same type!
+    
+    logω = log.(ones(K)/K) 
+
+    return [logω; reduce(vcat, [diagonal_parameters(elbo.comp[k], p[(1 + (k-1)*np):(k*np)]) for k in 1:K])]
+
+end
+
+
+
 ########
 # FULL #
 ########
@@ -64,6 +78,19 @@ function ELBOfyUtilities.full_parameters(elbo::ELBOfy.ElboMixture{T}, p) where T
 end
 
 
+function ELBOfyUtilities.full_parameters(elbo::ELBOfy.ElboUniformMixture{T}, p) where T<:ELBOfy.ElboSphere
+
+    K = length(elbo)
+    
+    np = numparam(elbo.comp[1]) # assume all components are of the same type!
+    
+    logω = log.(ones(K)/K) 
+
+    return [logω; reduce(vcat, [full_parameters(elbo.comp[k], p[(1 + (k-1)*np):(k*np)]) for k in 1:K])]
+
+end
+
+
 #######
 # MVI #
 #######
@@ -92,5 +119,18 @@ function ELBOfyUtilities.mvi_parameters(elbo::ELBOfy.ElboMixture{T}, p) where T<
     logω = p[1:K] 
 
     return [logω; reduce(vcat, [mvi_parameters(elbo.comp[k], p[(K + 1 + (k-1)*np):(K + k*np)]) for k in 1:K])]
+
+end
+
+
+function ELBOfyUtilities.mvi_parameters(elbo::ELBOfy.ElboUniformMixture{T}, p) where T<:ELBOfy.ElboSphere
+
+    K = length(elbo)
+    
+    np = numparam(elbo.comp[1]) # assume all components are of the same type!
+    
+    logω = log.(ones(K)/K)  
+
+    return [logω; reduce(vcat, [mvi_parameters(elbo.comp[k], p[(1 + (k-1)*np):(k*np)]) for k in 1:K])]
 
 end
