@@ -2,7 +2,7 @@
 function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVI, param::Vector)
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-    μ, Cprv, ψ = ELBOfy.getμC(elbo, param)
+    μ, Cprv = ELBOfy.getμC(elbo, param)
 
     # Σnew = getcovariance(elbo.logp, μ; minimumeigenvalue = minimumeigenvalue)
 
