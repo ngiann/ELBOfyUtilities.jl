@@ -28,17 +28,17 @@ function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, itera
 
     opt = Optim.Options(show_trace = show_every > 0, show_every = max(show_every,1), iterations = iterations, allow_f_increases = false, f_tol = f_tol, g_tol = g_tol)
 
-    g!(storage, params) = copyto!(storage, -1*DifferentiationInterface.gradient(elbo, backend, params))
+    # g!(storage, params) = copyto!(storage, -1*DifferentiationInterface.gradient(elbo, backend, params))
 
-    # if has_logp_gradient(elbo)
+    if has_logp_gradient(elbo)
 
-    #     gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(trackelbo, param))
+        gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(elbo, param))
     
-    #     return optimize(x-> -trackelbo(x), params, LBFGS(), opt)
+        return optimize(x-> -elbo(x), gradhelper!, params, LBFGS(), opt)
 
-    # end
+    end
 
-    return optimize(x-> -elbo(x), g!, params, Method, opt)
+    return optimize(x-> -elbo(x), params, Method, opt)
 
 end
 
