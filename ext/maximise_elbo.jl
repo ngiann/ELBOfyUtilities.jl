@@ -38,7 +38,7 @@ function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, itera
 
     end
 
-    return optimize(x-> -elbo(x), params, Method, opt)
+    return optimize(x-> -elbo(x), params, NelderMead(), opt)
 
 end
 
