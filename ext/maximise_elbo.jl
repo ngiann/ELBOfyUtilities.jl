@@ -34,7 +34,7 @@ function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, itera
 
         gradhelper!(st, param) = copyto!(st, -ELBOfy.grad(elbo, param))
     
-        return optimize(x-> -elbo(x), gradhelper!, params, LBFGS(), opt)
+        return optimize(x-> -elbo(x), gradhelper!, params, Method, opt)
 
     end
 
