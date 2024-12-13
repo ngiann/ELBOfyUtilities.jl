@@ -10,7 +10,9 @@ function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVI, param::Vector)
 
     Vnew = geteigenvectors(elbo.logp, μ)
 
-    elbonew = ELBOfy.ElboMVI(elbo.Z, elbo.D, elbo.S, elbo.logp, elbo.gradlogp, Vnew, Cprv, elbo.buffer)
+    elbonew = ELBOfy.ElboMVI(elbo.Z, elbo.D, elbo.S, elbo.logp, 
+                            elbo.gradlogp, Vnew, copy(Cprv), # <--- copy to avoid aliasing
+                            ELBOfy.create_elbo_mvi_buffer(D, elbo.gradlogp)) # <--- create new buffer to avoid aliasing
 
     elbonew, [μ; zeros(elbo.D); 1.0] # set mean μ to current mean
                                      # set eigenvalues to zero, this makes the contribution of the new covariance zero
