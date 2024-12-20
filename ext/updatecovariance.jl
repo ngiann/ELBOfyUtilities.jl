@@ -20,7 +20,9 @@ function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVI, param::Vector)
     Veig = Veig*Dflip
 
 
-    logR = log(Veig'*Vold)
+    # need the 'real' below because occassionaly due to numerics tiny imaginary values may occur
+    # logR is thoreticcaly a real skewed symmetric matrix
+    logR = real.(log(Veig'*Vold)) 
 
 
     elbonew = ELBOfy.ElboMVI(elbo.Z, elbo.D, elbo.S, elbo.logp, 
