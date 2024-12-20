@@ -2,21 +2,34 @@
 function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVI, param::Vector)
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-    μ, Cprv = ELBOfy.getμC(elbo, param)
+    μ, Esqrt, t = ELBOfy.unpack(elbo, param)
 
-    # Σnew = getcovariance(elbo.logp, μ; minimumeigenvalue = minimumeigenvalue)
+    Vold = ELBOfy.interpolateV(elbo, t)
 
-    # Vnew, = ELBOfy.eigendecomposition(Σnew)
+    Veig = geteigenvectors(elbo.logp, μ)
+   
+    # Dflip is an orthogonal matrix representing a reflection or inversion.
+    # Its role is to make Veig a proper orthogonal matrix with determinant equal to 1.
+    # We only change the orientation of the basis.
+    # The transformation flips the overall orientation to match a positively oriented space.
 
-    Vnew = geteigenvectors(elbo.logp, μ)
+    Dflip = Diagonal(ones(elbo.D))
+    if det(Veig)<0 
+        Dflip[elbo.D, elbo.D] = -1 # any diagonal element will do
+    end
+    Veig = Veig*Dflip
+
+
+    logR = log(Veig'*Vold)
+
 
     elbonew = ELBOfy.ElboMVI(elbo.Z, elbo.D, elbo.S, elbo.logp, 
-                            elbo.gradlogp, Vnew, copy(Cprv), # <--- copy to avoid aliasing
-                            ELBOfy.create_elbo_mvi_buffer(D, elbo.gradlogp)) # <--- create new buffer to avoid aliasing
+                            elbo.gradlogp, Veig, logR, # <--- copy to avoid aliasing
+                            ELBOfy.create_elbo_mvi_buffer(elbo.D, elbo.gradlogp)) # <--- create new buffer to avoid aliasing
 
-    elbonew, [μ; zeros(elbo.D); 1.0] # set mean μ to current mean
-                                     # set eigenvalues to zero, this makes the contribution of the new covariance zero
-                                     # set t to 1, this retains the previous solution
+    elbonew, [μ; Esqrt; 1] # set mean μ to current mean
+                           # set eigenvalues to zero, this makes the contribution of the new covariance zero
+                           # set t to 1, this retains the previous solution
 end
 
 
