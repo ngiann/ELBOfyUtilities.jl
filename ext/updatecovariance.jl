@@ -21,7 +21,7 @@ function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVI, param::Vector)
 
 
     # need the 'real' below because occassionaly due to numerics tiny imaginary values may occur
-    # logR is thoreticcaly a real skewed symmetric matrix
+    # Theoretically, logR is a real skewed symmetric matrix
     logR = real.(log(Veig'*Vold)) 
 
 
