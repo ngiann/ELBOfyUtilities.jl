@@ -4,30 +4,35 @@ function ELBOfyUtilities.updatecovariance(elbo::ELBOfy.ElboMVI, param::Vector)
 
     μ, Esqrt, t = ELBOfy.unpack(elbo, param)
 
-    Vold = ELBOfy.interpolateV(elbo, t)
-
+    # Vold = ELBOfy.interpolateV(elbo, t)
+    Vold = zeros(elbo.D, elbo.D)
+    elbo.SOinterp(Vold, t)
+    
     Veig = geteigenvectors(elbo.logp, μ)
+
+    ELBOfy.makespecialorthogonal!(Veig)
    
-    # Dflip is an orthogonal matrix representing a reflection or inversion.
-    # Its role is to make Veig a proper orthogonal matrix with determinant equal to 1.
-    # We only change the orientation of the basis.
-    # The transformation flips the overall orientation to match a positively oriented space.
+    # # Dflip is an orthogonal matrix representing a reflection or inversion.
+    # # Its role is to make Veig a proper orthogonal matrix with determinant equal to 1.
+    # # We only change the orientation of the basis.
+    # # The transformation flips the overall orientation to match a positively oriented space.
 
-    Dflip = Diagonal(ones(elbo.D))
-    if det(Veig)<0 
-        Dflip[elbo.D, elbo.D] = -1 # any diagonal element will do
-    end
-    Veig = Veig*Dflip
+    # Dflip = Diagonal(ones(elbo.D))
+    # if det(Veig)<0 
+    #     Dflip[elbo.D, elbo.D] = -1 # any diagonal element will do
+    # end
+    # Veig = Veig*Dflip
 
 
-    # need the 'real' below because occassionaly due to numerics tiny imaginary values may occur
-    # Theoretically, logR is a real skewed symmetric matrix
-    logR = real.(log(Veig'*Vold)) 
-
+    # # need the 'real' below because occassionaly due to numerics tiny imaginary values may occur
+    # # Theoretically, logR is a real skewed symmetric matrix
+    # logR = real.(log(Veig'*Vold)) 
 
     elbonew = ELBOfy.ElboMVI(elbo.Z, elbo.D, elbo.S, elbo.logp, 
-                            elbo.gradlogp, Veig, logR, # <--- copy to avoid aliasing
-                            ELBOfy.create_elbo_mvi_buffer(elbo.D, elbo.gradlogp)) # <--- create new buffer to avoid aliasing
+                            elbo.gradlogp, Veig,
+                            ELBOfy.create_elbo_mvi_buffer(elbo.D, elbo.gradlogp), # <--- create new buffer to avoid aliasing
+                            ELBOfy.create_interpolator(Veig, Vold))
+    
 
     elbonew, [μ; Esqrt; 1] # set mean μ to current mean
                            # set eigenvalues to zero, this makes the contribution of the new covariance zero
