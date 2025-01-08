@@ -19,7 +19,7 @@ end
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
-function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, iteration_test = 0, show_every = 1, f_tol = 0.0, g_tol=1e-8, Method = BFGS(), backend = AutoZygote()) where T<:ELBOfy.AbstractElbo
+function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, iteration_test = 0, show_every = 1, f_tol = 0.0, g_tol=1e-8, Method = BFGS()) where T<:ELBOfy.AbstractElbo
 #-------------------------------------------------------------------------------------------------------------------------------------
 
     @printf("Resuming optimisation starting with approximate elbo of %f\n", elbo(params))
@@ -27,8 +27,6 @@ function ELBOfyUtilities.maximise_elbo(elbo::T, params; iterations = 1000, itera
     # trackelbo, cb = get_callback_and_track_elbo_for_tracking_test_evidence(elbo, iteration_test)
 
     opt = Optim.Options(show_trace = show_every > 0, show_every = max(show_every,1), iterations = iterations, allow_f_increases = false, f_tol = f_tol, g_tol = g_tol)
-
-    # g!(storage, params) = copyto!(storage, -1*DifferentiationInterface.gradient(elbo, backend, params))
 
     if has_logp_gradient(elbo)
 
