@@ -1,11 +1,9 @@
 module ELBOfyUtilities
 
-    using LinearAlgebra, Distributions, FiniteDiff, Random
+    using Distributions,LinearAlgebra, OnlineStats, Random
     using Optim, BlackBoxOptim, Evolutionary
-    using OnlineStats
+    using ForwardDiff
     using Printf
-    
-    include("updatecovariance.jl")
     
     include("getmode.jl")
 
@@ -13,26 +11,18 @@ module ELBOfyUtilities
 
     include("geteigenvectors.jl")
 
-    include("maximise_elbo.jl")
+    include("maximise_elbo_nm.jl")
 
     include("nearestposdef.jl")
 
     include("numerical_KLD.jl")
 
     include("convert_parameters.jl")
-
-    export updatecovariance
     
-    export getmode, getcovariance, geteigenvectors
-    
-    export maximise_elbo, bbmaximise_elbo, cmaesmaximise_elbo
+    maximise_elbo_diagonal_nm(_...) = error("ELBOfy must be independently loaded!")
+    maximise_elbo_full_nm(_...) = error("ELBOfy must be independently loaded!")
+    maximise_elbo_mvi_nm(_...) = error("ELBOfy must be independently loaded!")
 
-    export getminimum, getsolution
-    
-    export nearestposdef
-
+    export maximise_elbo_diagonal_nm, maximise_elbo_full_nm, maximise_elbo_mvi_nm
     export numerical_KLD
-
-    export diagonal_parameters, full_parameters, mvi_parameters
-
 end

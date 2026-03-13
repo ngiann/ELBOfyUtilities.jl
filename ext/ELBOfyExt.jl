@@ -1,33 +1,54 @@
 module ELBOfyExt # Should be same name as the file (just like a normal package)
 
-    using ELBOfyUtilities, ELBOfy, Optim, Printf, Random, Zygote, LinearAlgebra
-    using DifferentiationInterface
-    using BlackBoxOptim
-    using Evolutionary
+    using ELBOfyUtilities, ELBOfy, Random, LinearAlgebra
 
-    ELBOfyUtilities.getsolution(res::Vector) = res
-  
-    ELBOfyUtilities.getminimum(res::Evolutionary.OptimizationResults) = Evolutionary.minimum(res)
-    ELBOfyUtilities.getsolution(res::Evolutionary.OptimizationResults) = Evolutionary.minimizer(res)
-  
-    ELBOfyUtilities.getminimum(res::BlackBoxOptim.OptimizationResults) = BlackBoxOptim.best_fitness(res)
-    ELBOfyUtilities.getsolution(res::BlackBoxOptim.OptimizationResults) = BlackBoxOptim.best_candidate(res)
-  
-    ELBOfyUtilities.getminimum(res::Optim.OptimizationResults) = Optim.minimum(res)
-    ELBOfyUtilities.getsolution(res::Optim.OptimizationResults) = Optim.minimizer(res)   
 
-    include("trackElbo.jl")
 
-    include("maximise_elbo.jl")
+    function ELBOfyUtilities.maximise_elbo_diagonal_nm(logp, params, S, options, rng::AbstractRNG = Random.default_rng()) 
 
-    include("maximise_elbo_blackboxoptim.jl")
+        D = length(params)
+        
+        elbo = ELBOfy.elbofy_diag(logp, D, S, gradlogp = nothing, rng = rng)
+        
+        extparams = [params; ones(D)] # add D parameters for the diagonal covariance matrix
 
-    include("maximise_elbo_cmaes.jl")
+        paramopt = ELBOfyUtilities.maximise_elbo_nm(elbo, extparams, options)
 
-    include("get_callback_and_track_elbo_for_tracking_test_evidence.jl")
+        posterior(elbo, paramopt)
 
-    include("updatecovariance.jl")
+    end
 
-    include("convert_parameters.jl")
+    function ELBOfyUtilities.maximise_elbo_full_nm(logp, params, S, options, rng::AbstractRNG = Random.default_rng()) 
 
-end # module
+        D = length(params)
+
+        elbo = ELBOfy.elbofy_full(logp, D, S, gradlogp = nothing, rng = rng)
+        
+        extparams = [params; vec(Diagonal(ones(D)))] # add parameters for the diagonal covariance matrix
+
+        paramopt = ELBOfyUtilities.maximise_elbo_nm(elbo, extparams, options)
+
+        posterior(elbo, paramopt)
+
+    end
+
+    function ELBOfyUtilities.maximise_elbo_mvi_nm(logp, params, S, options, rng::AbstractRNG = Random.default_rng()) 
+
+        D = length(params)
+
+        m, = ELBOfyUtilities.getmode_nm(logp, params)
+
+        V = ELBOfyUtilities.geteigenvectors(logp, m)
+
+        elbo = ELBOfy.elbofy_mvi(logp, V, S, gradlogp = nothing, rng = rng)
+        
+        extparams = [params; ones(D)] # add parameters for the "stretching" parameters
+
+        paramopt = ELBOfyUtilities.maximise_elbo_nm(elbo, extparams, options)
+
+        posterior(elbo, paramopt)
+
+    end
+
+    
+end
